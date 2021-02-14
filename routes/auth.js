@@ -49,8 +49,9 @@ router.post('/login', async (req, res) => {
 		return res.status(400).send({ err: 'Email or password is incorrect' });
 	}
 	//Create and assign a token
+	const userId = user._id
 	const token = jwt.sign({ user }, process.env.TOKEN_SECRET);
-	res.send(token);
+	res.send({token: token, userId: userId});
 });
 
 module.exports = router;
