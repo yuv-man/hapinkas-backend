@@ -2,9 +2,11 @@ const router = require('express').Router();
 const User = require('../models/UserModel'); //path for DB Schema
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const UserModel = require('../models/UserModel')
 
 router.post('/signup', async (req, res) => {
 
+	console.log(req.body)
 	//Check if email already in the DB
 	const emailExist = await User.findOne({ email: req.body.email });
 	if (emailExist) return res.status(400).send({ err: 'Email already exists' });
@@ -14,7 +16,6 @@ router.post('/signup', async (req, res) => {
 	const hashPassword = bcrypt.hashSync(req.body.password, salt);
 
 	//Create new user
-	console.log(req.body);
 	const user = new User({
 		userName: req.body.userName,
 		email: req.body.email,
@@ -25,10 +26,13 @@ router.post('/signup', async (req, res) => {
 	});
 	try {
 		const savedUser = await user.save();
+		const id = savedUser._id
 		const token = jwt.sign({ user }, process.env.TOKEN_SECRET);
-		res.send(token);
+		console.log(token)
+		res.status(200).send({token: token, userId: id});
 	} catch (err) {
-		res.status(400).send({ err: err });
+		console.log(err)
+		res.status(400).send();
 	}
 });
 

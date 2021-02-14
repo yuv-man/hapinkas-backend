@@ -6,12 +6,16 @@ const eventSchema = new Schema ({
         type: String, 
         required: true
     }, 
+    type: {
+        type: String,
+        required: true
+    },
     description:{
         type: String,
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     location: {
