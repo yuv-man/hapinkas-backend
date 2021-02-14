@@ -24,7 +24,7 @@ router.get('/', async(req, res) =>{
 router.get('/:id', async(req, res) =>{
     const { id } = req.params
     try{
-        const user = await UserModel.findById({id})
+        const user = await UserModel.findById( id )
         res.status(200).send(user)
     } catch (err) {
         res.status(500).send('the user does not exist')
