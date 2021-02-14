@@ -24,7 +24,7 @@ router.get('/', async(req, res) =>{
 router.get('/:id', async(req, res) =>{
     const { id } = req.params
     try{
-        const user = await UserModel.findById({id})
+        const user = await UserModel.findById( id )
         res.status(200).send(user)
     } catch (err) {
         res.status(500).send('the user does not exist')
@@ -65,7 +65,7 @@ router.put('/:id', upload.single('profileImage'), async (req, res) => {
 router.delete('/:id', async(req, res) =>{
     const { id } = req.params
     try{
-        const user = await UserModel.findByIdAndRemove({id})
+        const user = await UserModel.findByIdAndRemove( id )
         res.status(200).send('the user successfully deleted')
     } catch (err) {
         res.status(500).send('the user does not exist')
@@ -77,7 +77,7 @@ router.put('/createEvent/:id', async(req, res) =>{
     const { id } = req.params
     const { eventId } = req.body
     try{
-        const user = await UserModel.findByIdAndUpdate({id}, 
+        const user = await UserModel.findByIdAndUpdate( id , 
             { $push: { myEvents: eventId }}, { new: true });
         res.status(200).send('the event has created')
     } catch (err) {
@@ -90,7 +90,7 @@ router.put('/removeEvent/:id', async(req, res) =>{
     const { id } = req.params
     const { eventId } = req.body
     try{
-        const user = await UserModel.findByIdAndUpdate({id}, 
+        const user = await UserModel.findByIdAndUpdate( id , 
             { $pull: { myEvents: eventId }}, { new: true });
         res.status(200).send('the event has been deleted')
     } catch (err) {
@@ -104,11 +104,11 @@ router.put('/participate/:id', async(req, res) =>{
     const { eventId } = req.body
     try{
         if (!user.events.includes(eventId)) {
-        const user = await UserModel.findByIdAndUpdate({id}, 
+        const user = await UserModel.findByIdAndUpdate( id, 
             { $push: { events: eventId }}, { new: true });
         res.status(200).send('another participant')
         } else {
-        const user = await UserModel.findByIdAndUpdate({id}, 
+        const user = await UserModel.findByIdAndUpdate( id , 
             { $pull: { events: eventId }}, { new: true });
         res.status(201).send('minus participant')
         }
